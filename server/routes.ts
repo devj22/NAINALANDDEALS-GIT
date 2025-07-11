@@ -476,6 +476,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+
+  // --- DYNAMIC SITEMAP ROUTE ---
+  app.get('/sitemap.xml', async (req: Request, res: Response) => {
+    try {
+      // Fetch all properties
+      const properties = await storage.getAllProperties();
+
+      // Static URLs (excluding admin pages)
+      const staticUrls = [
+        '',
+        'blogs',
+        'properties',
+        'buying-guides',
+        'investment-tips',
+        'legal-guidance',
+        'market-trends',
+        'faq'
+      ];
+
+      let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+      xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+      staticUrls.forEach(path => {
+        xml += `  <url><loc>https://nainalanddeals.com/${path}</loc></url>\n`;
+      });
+
+      properties.forEach(property => {
+        xml += `  <url><loc>https://nainalanddeals.com/properties/${property.id}</loc></url>\n`;
+      });
+
+      xml += `</urlset>`;
+      res.header('Content-Type', 'application/xml');
+      res.send(xml);
+    } catch (error) {
+      res.status(500).send('Failed to generate sitemap');
+    }
+  });
+
+
   app.use('/api', apiRouter);
 
   const httpServer = createServer(app);
