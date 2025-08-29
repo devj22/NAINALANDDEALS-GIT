@@ -15,7 +15,7 @@ app.use(express.json());
 // Configure CORS
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-  ? ['https://nainalanddeals.com']  // ✅ correct GoDaddy domain
+  ? ['']  // ✅ correct GoDaddy domain
   ,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
