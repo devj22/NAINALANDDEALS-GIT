@@ -4,3 +4,10 @@ dist
 server/public
 vite.config.ts.*
 *.tar.gz
+# Local environment files
+.env
+.env.*
+client/.env
+client/.env.*
+server/.env
+server/.env.*
